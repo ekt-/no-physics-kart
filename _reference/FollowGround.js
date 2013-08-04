@@ -1,8 +1,6 @@
 // You should change the center of this gameObject's mesh from default value (0,0,0).
 // Because this script put its point to the contact point with the ground.
-
 // And "use gravity" must be FALSE.
-
 // Call HitTestWithRoad() from Update()
 
 public var distance:float = 2.0;
