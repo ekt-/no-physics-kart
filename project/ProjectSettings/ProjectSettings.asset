@@ -5,17 +5,17 @@ PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   AndroidProfiler: 0
-  defaultScreenOrientation: 0
+  defaultScreenOrientation: 3
   targetDevice: 2
   targetGlesGraphics: 1
   targetResolution: 0
   accelerometerFrequency: 60
-  companyName: DefaultCompany
-  productName: project
+  companyName: EktGames
+  productName: TestForcesApp
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
-  defaultScreenWidth: 1024
-  defaultScreenHeight: 768
+  defaultScreenWidth: 960
+  defaultScreenHeight: 600
   defaultScreenWidthWeb: 960
   defaultScreenHeightWeb: 600
   m_RenderingPath: 1
@@ -23,8 +23,8 @@ PlayerSettings:
   m_MTRendering: 1
   m_UseDX11: 0
   iosShowActivityIndicatorOnLoading: -1
-  androidShowActivityIndicatorOnLoading: -1
-  displayResolutionDialog: 1
+  androidShowActivityIndicatorOnLoading: 2
+  displayResolutionDialog: 0
   allowedAutorotateToPortrait: 1
   allowedAutorotateToPortraitUpsideDown: 1
   allowedAutorotateToLandscapeRight: 1
@@ -32,7 +32,7 @@ PlayerSettings:
   useOSAutorotation: 1
   use32BitDisplayBuffer: 1
   use24BitDepthBuffer: 0
-  defaultIsFullScreen: 1
+  defaultIsFullScreen: 0
   defaultIsNativeResolution: 1
   runInBackground: 0
   captureSingleScreen: 0
@@ -69,7 +69,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  iPhoneBundleIdentifier: com.Company.ProductName
+  iPhoneBundleIdentifier: com.EktGames.MyTestForcesApp
   productGUID: e78368e99c54de543af72bb818ffd716
   iPhoneBundleVersion: 1.0
   AndroidBundleVersionCode: 1
@@ -102,8 +102,25 @@ PlayerSettings:
   AndroidSplashScreenScale: 0
   AndroidKeystoreName: 
   AndroidKeyaliasName: 
-  resolutionDialogBanner: {fileID: 0}
-  m_BuildTargetIcons: []
+  resolutionDialogBanner: {fileID: 2800000, guid: 3e97d1cc5a2f0a2438f58a6ec1dbef2e,
+    type: 3}
+  m_BuildTargetIcons:
+  - m_BuildTarget: 
+    m_Icons:
+    - m_Icon: {fileID: 0}
+      m_Size: 128
+  - m_BuildTarget: Android
+    m_Icons:
+    - m_Icon: {fileID: 2800000, guid: 4ac4e514cc326474ba6486bc1f4494c4, type: 3}
+      m_Size: 144
+    - m_Icon: {fileID: 2800000, guid: bc6c76e67d743684fbcec3ca2bc95770, type: 3}
+      m_Size: 96
+    - m_Icon: {fileID: 2800000, guid: 0cc783244fa783241b8422b8c62f143d, type: 3}
+      m_Size: 72
+    - m_Icon: {fileID: 2800000, guid: f0154057064ea5043a19a93b10cd04c9, type: 3}
+      m_Size: 48
+    - m_Icon: {fileID: 2800000, guid: e511b4cf906741544b5b42f1cb068680, type: 3}
+      m_Size: 36
   m_BuildTargetBatching: []
   webPlayerTemplate: APPLICATION:Default
   m_TemplateCustomTags: {}
@@ -141,7 +158,16 @@ PlayerSettings:
   ps3SaveGameSlots: 1
   ps3TrialMode: 0
   flashStrippingLevel: 2
-  scriptingDefineSymbols: {}
+  scriptingDefineSymbols:
+    data:
+      first: 1
+      second: 
+    data:
+      first: 2
+      second: 
+    data:
+      first: 4
+      second: 
   metroPackageName: project
   metroPackageLogo: 
   metroPackageVersion: 
