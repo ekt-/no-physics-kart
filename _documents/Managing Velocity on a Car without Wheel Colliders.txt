@@ -1,0 +1,52 @@
+--------------------------------------------------------------------------------
+Managing Velocity on a Car without Wheel Colliders
+--------------------------------------------------------------------------------
+
+http://forum.unity3d.com/threads/121311-Managing-Velocity-on-a-Car-without-Wheel-Colliders
+
+to move forward
+transform.Translate(Vector3.forward, etc,etc);
+
+to turn
+transform.rotation *= Quaternion.AngleAxis();
+
+I'm very happy with the way this works except for one thing: velocity/acceleration is not handled.
+
+To fix the horizontal acceleration and deceleration of the car, I modified the car movement script to slow down or speed up the car when it starts or stops moving. The car properly accelerated forwards, but would not properly decelerate.
+
+A bigger issue I have is falling. Gravity does its job well, but moving forward is flawed. Because of the way the script moves (the car's forward is Vector3.forward) the player can simply tilt the car up while in the air, so that the car's 'forward' is really upwards and they player never falls down.
+
+      Your not using the physics engine, when you translate your object.
+
+      You can 
+      A, add collision detection to check if the car is on the ground, and apply a downward force, disable turning and acceleration/deceleration.
+      B, Add a rigidbody to your car then convert the Transform.Translate to a Rigidbody.AddForce, and Rotate to Rigidbody.AddTorque
+
+      These should give you a closer response to what you desire:
+
+      A can be more controlled with less physics overhead.
+      B lets the physics do the work but can take more to get the feel right.
+
+SOLUTION: So it did. To complete the picture here, if you want to use a kinematic rigidbody (tag the kinematic checkbox in the rigidbody properties), and want to move it around and still affect physics, use rigidbody.MovePosition() and rigidbody.MoveRotation().
+
+--------------------------------------------------------------------------------
+Tranfer momentum
+--------------------------------------------------------------------------------
+When working with kinematic rigidbodies, you should not use transform.Translate() because it will not make the physics aware of its speed, only its position. So although physics seem to react, it's only resolving the collision by moving the collided object outside the collided object.
+
+Instead, when using kinematic rigidbodies, you should use rigidbody.MovePosition(). Note that this, as opposed to Translate(), moves the object in world space. So if you want the position it in local space, you need to use TransformDirection():
+
+void FixedUpdate () 
+{
+        // Does not transfer momentum, because (read on forum that) Translate does not affect physics:
+        //transform.Translate(Time.deltaTime * (speed * Input.GetAxisRaw("Vertical") * Vector3.forward));
+ 
+        // Does transfer momentum, but won't affect kinematics:
+        //rigidbody.AddForce(Time.deltaTime * (speed * Input.GetAxisRaw("Vertical") * Vector3.forward));
+ 
+        // Does transfer momentum, can use kinematic, but forward seems not forward, but horizontal:
+        //rigidbody.MovePosition(rigidbody.position + Time.deltaTime * (speed * Input.GetAxisRaw("Vertical") * Vector3.forward));
+ 
+        // Does transfer momentum, can use kinematic, and translates along local axis (solution):
+        rigidbody.MovePosition(rigidbody.position + Time.deltaTime * (speed * Input.GetAxisRaw("Vertical") * transform.TransformDirection(Vector3.forward)));
+}

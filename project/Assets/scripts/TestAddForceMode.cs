@@ -53,29 +53,61 @@ public class TestAddForceMode : MonoBehaviour
             ApplyForcesOnce();
         }
 
-        if (m_keyG.IsKeyDown || Button2.IsKeyDown)
+        const bool useCoroutine = true;
+        const bool useCoroutineYieldNull = false;
+
+        if (useCoroutine)
         {
-            //Debug.Log("appling continuous forces (w/coroutine)...");
-            //StartCoroutine(ApplyForcesOverAPeriodOfTimeCoroutine());
-            m_numberOfFixedUpdatesApplingForces = 100;            
+
+            if (m_keyG.IsKeyDown || Button2.IsKeyDown)
+            {
+                Debug.Log("appling continuous forces (w/coroutine)...");
+                if (useCoroutineYieldNull)
+                {
+                    StartCoroutine(ApplyForcesOverAPeriodOfTimeCoroutineYieldNull());    
+                }
+                else
+                {
+                    StartCoroutine(ApplyForcesOverAPeriodOfTimeCoroutineAndWaitForFixedUpdate());    
+                }
+                
+            }            
         }
-        ApplyForcesOverAPeriodOfTime();
+        else
+        {
+            if (m_keyG.IsKeyDown || Button2.IsKeyDown)
+            {
+                m_numberOfFixedUpdatesApplingForces = 100;
+            }
+            ApplyForcesOverAPeriodOfTime();
+        }
     }
 
-    IEnumerator ApplyForcesOverAPeriodOfTimeCoroutine()
+    IEnumerator ApplyForcesOverAPeriodOfTimeCoroutineYieldNull()
     {
         // siccome le coroutine vengono aggiornate ad ogni update
         // ho il dubbio che in questo caso non siano indicate (l'azione andrebbe fatta ad ogni FxiedUpdate)
         // todo: fare una scena pesantissima, loggare gli update, i fixedupdate e una coroutine
-        Debug.Log("ApplyForcesOverAPeriodOfTime started...");
-        for (int i = 0; i < 10; i++)
+        Debug.Log("ApplyForcesOverAPeriodOfTimeCoroutineYieldNull started...");
+        for (int i = 0; i < 100; i++)
         {
-            Log("ApplyForcesOverAPeriodOfTime step="+i);
+            Log("ApplyForcesOverAPeriodOfTimeCoroutineYieldNull step=" + i);
             ApplyForcesOnce();
-            //yield return new WaitForFixedUpdate();    
             yield return null;
         }
-        Debug.Log("ApplyForcesOverAPeriodOfTime finished...");
+        Debug.Log("ApplyForcesOverAPeriodOfTimeCoroutineYieldNull finished...");
+    }
+
+    IEnumerator ApplyForcesOverAPeriodOfTimeCoroutineAndWaitForFixedUpdate()
+    {
+        Debug.Log("ApplyForcesOverAPeriodOfTimeCoroutineAndWaitForFixedUpdate started...");
+        for (int i = 0; i < 100; i++)
+        {
+            Log("ApplyForcesOverAPeriodOfTimeCoroutineAndWaitForFixedUpdate step=" + i);
+            ApplyForcesOnce();
+            yield return new WaitForFixedUpdate();    
+        }
+        Debug.Log("ApplyForcesOverAPeriodOfTimeCoroutineAndWaitForFixedUpdate finished...");
     }
 
     private int m_numberOfFixedUpdatesApplingForces;
@@ -118,15 +150,8 @@ public class TestAddForceMode : MonoBehaviour
         m_cube4.rigidbody.AddForce(force, ForceMode.VelocityChange);
     }
 
-    private int m_logCount = 0;
     private void Log(string message)
     {
-        m_logCount++;
-        if (m_logCount>1000)
-        {
-            return;
-        }
-        //Debug.Log(message);
-        Console.WriteLine(message);
+        //Console.WriteLine(message);
     }
 }
