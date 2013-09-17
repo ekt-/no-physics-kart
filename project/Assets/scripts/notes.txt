@@ -1,3 +1,4 @@
 http://answers.unity3d.com/questions/307330/gui-scale-guis-according-to-resolution.html
 
-IMHO using GUITextures with no Pixel Inset Values and using the Transform Position and Scale in the inspector has been the best way. Everything then auto scales much easier and the CPU Cycles saved Managed to get me an extra 10 FPS on low spec devices.
+IMHO using GUITextures with no Pixel Inset Values and using the Transform Position and Scale in the inspector has been the best way. 
+Everything then auto scales much easier and the CPU Cycles saved Managed to get me an extra 10 FPS on low spec devices.

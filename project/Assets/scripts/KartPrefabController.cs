@@ -32,28 +32,37 @@ public class KartPrefabController : MonoBehaviour
 
         // float xVel = transform.InverseTransformDirection(rigidbody.velocity).x;
 
+        var isAccelerating = m_inputUp;
+        var isBraking = !isAccelerating;
+
         var force = new Vector3(0, 0, 10);
-        if (m_inputUp)
+        if (isAccelerating)
         {
             rigidbody.AddRelativeForce(force, ForceMode.Acceleration);    
         }
         else
         {
-            var currentGlobalVel = rigidbody.velocity * -0.99f;
-            rigidbody.AddForce(currentGlobalVel, ForceMode.Acceleration);
-            //var brake = new Vector3(0, 0, 10);
-            //rigidbody.AddRelativeForce(brake, ForceMode.Acceleration);            
+            var brakeForce = rigidbody.velocity * -0.1f;
+            rigidbody.AddForce(brakeForce, ForceMode.Impulse);
         }
 
-        if (m_inputLeft)
+        var velocityMagnitude = rigidbody.velocity.magnitude;
+        var turnVelocityThreshold = isAccelerating ? 0.5f : 10f;
+        var canTurn = velocityMagnitude > turnVelocityThreshold;
+
+        if (canTurn)
         {
-            var turnTorque = new Vector3(0, -1.5f, 0);
-            rigidbody.AddTorque(turnTorque);
-        }
-        else if (m_inputRight)
-        {
-            var turnTorque = new Vector3(0, 1.5f, 0);
-            rigidbody.AddTorque(turnTorque);            
+            const float turnSpeed = 2f;
+            if (m_inputLeft)
+            {
+                var turnTorque = new Vector3(0, -turnSpeed, 0);
+                rigidbody.AddTorque(turnTorque);
+            }
+            else if (m_inputRight)
+            {
+                var turnTorque = new Vector3(0, turnSpeed, 0);
+                rigidbody.AddTorque(turnTorque);
+            }            
         }
 
         /*
@@ -64,11 +73,8 @@ public class KartPrefabController : MonoBehaviour
   }
          */
 
-        // kill lateral force
-        //b2Vec2 impulse = m_body->GetMass() * -getLateralVelocity();
-        //m_body->ApplyLinearImpulse( impulse, m_body->GetWorldCenter() );
 
-        // getLateralVelocity
+        // kill lateral force
         var rightNormal = transform.TransformDirection(new Vector3(1, 0, 0));
         var lateralVelocity = Vector3.Dot(rightNormal, rigidbody.velocity)*rightNormal;
         var impulse = - rigidbody.mass * lateralVelocity;
