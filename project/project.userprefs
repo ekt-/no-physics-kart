@@ -1,8 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\SmoothFollow.js">
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="..\..\BezierCurves\Assets\BezierPath.cs">
     <Files>
-      <File FileName="Assets\scripts\SmoothFollow.js" Line="67" Column="1" />
+      <File FileName="..\..\BezierCurves\Assets\Main.cs" Line="152" Column="58" />
+      <File FileName="..\..\BezierCurves\Assets\BezierPath.cs" Line="321" Column="41" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
