@@ -6,6 +6,7 @@ public var forwardSpeed:Number;
 public var steerAngle:Number;
 public var rotationT:float = 0.25;
 
+
 function FixedUpdate () 
 {
     var x:Number = Input.GetAxis("Horizontal");
@@ -29,7 +30,8 @@ function OnCollisionEnter(collision:Collision) {
 
 public var distance:float = 2.0;
 public var smoothRatio:float = 0.2;
-function HitTestWithRoad() {
+function HitTestWithRoad() 
+{
     var position:Vector3 = transform.position + transform.TransformDirection(Vector3.up) * -0.5;
     var direction:Vector3 = transform.TransformDirection(Vector3.down);
     var ray:Ray = new Ray(position, direction);
