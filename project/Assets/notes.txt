@@ -1,0 +1,7 @@
+Ci sono due componenti per animare
+- Animator (nuovo)
+- Anuimation (legacy)
+
+Esistono due diversi tipi di AnimationClip, anche se esternamente sono identici
+Per impostare lo stato devi andare nella modalità debig dell'Inspector
+

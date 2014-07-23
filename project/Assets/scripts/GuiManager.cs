@@ -12,19 +12,7 @@ public class GuiManager : MonoBehaviour
         
     }
 
-    void OnGUI()
-    {
-        // non sono sicuro se si utile settarlo solo una volta
-        GUI.skin = Skin;
-
-        //rctWindow1 = GUI.Window(0, rctWindow1, DoMyWindow, "Orange Unity", GUI.skin.GetStyle("window"));
-        var state = (GUI.RepeatButton(new Rect(10, 10, 200, 35), "[f] apply instant"));
-        TestForcesScript.Button1.NewState = state;
-
-        state = (GUI.RepeatButton(new Rect(10, 60, 200, 35), "[g] apply continuous"));
-        TestForcesScript.Button2.NewState = state;
-    }
-
+   
     /*
     void DoMyWindow(int windowID)
     {

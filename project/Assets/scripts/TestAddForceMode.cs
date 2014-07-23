@@ -2,22 +2,43 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// Test per cercare di capire le differenze di ForceMode
+/// </summary>
+/// Differenza fra Force e Impulse
+/// Una possibile spiegazione trovata è: 
+/// - Impulse modifies the velocity of the body instantaneously
+/// - Force modifies the velocity of the body *in terms of time passed*
+/// As a result, ApplyForce has about 1/30th (or whatever your physics step is) of the apparent affect as ApplyImpulse.
+/// That means applyImpulse(10) and 10 seconds applyForce(1) will result in the same velocity for the body
+///  impulse is just an incredible huge force over a really short amount of time
+/// Something like a player jumping is best handled as an impulse
+/// A rocket pack, on the other hand, is best done as a force, because it happens over an extended time
+/// <remarks>
+/// La documentazione di ForceMode dice:
+/// Force:	        Add a continuous force to the rigidbody, using its mass.
+/// Acceleration:	Add a continuous acceleration to the rigidbody, ignoring its mass.
+/// Impulse:	    Add an instant force impulse to the rigidbody, using its mass.
+/// VelocityChange:	Add an instant velocity change to the rigidbody, ignoring its mass.
+/// </remarks>-->
+/// http://unity3d.com/learn/tutorials/modules/beginner/physics/addforce
+/// 
 public class TestAddForceMode : MonoBehaviour 
 {
+    public GUISkin Skin;
 
     private GameObject m_cube1;
     private GameObject m_cube2;
     private GameObject m_cube3;
     private GameObject m_cube4;
 
-    private ButtonKeyState m_keyF;
-    private ButtonKeyState m_keyG;
-    internal ButtonKeyState Button1;
-    internal ButtonKeyState Button2;
+    private ButtonKeyState m_applyForceInstant;
+    private ButtonKeyState m_applyForceContinuous;
+
+    private int m_numberOfFixedUpdatesApplingForces;
 
     void Awake()
-    {
-        
+    {        
     }
 
 	// Use this for initialization
@@ -35,93 +56,65 @@ public class TestAddForceMode : MonoBehaviour
 
         Debug.Log("TestAddForceMode.Start executed");
 	}
-	
+
+    void OnGUI()
+    {
+        GUI.skin = Skin;
+
+        var state = (GUI.RepeatButton(new Rect(10, 10, 200, 35), "Apply instant once"));
+        m_applyForceInstant.NewState = state;
+
+        state = (GUI.RepeatButton(new Rect(10, 60, 200, 35), "Apply continuous"));
+        m_applyForceContinuous.NewState = state;
+    }
+
 	// Update is called once per frame
 	void Update ()
 	{
-        Log("Update");
-	    m_keyF.NewState = Input.GetKey(KeyCode.F);
-        m_keyG.NewState = Input.GetKey(KeyCode.G);
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
 	}
 
     void FixedUpdate()
     {
-        Log("FixedUpdate");
-        if (m_keyF.IsKeyDown || Button1.IsKeyDown)
+        if (m_applyForceInstant.IsKeyDown)
         {
             Debug.Log("appling istant forces...");
             ApplyForcesOnce();
         }
 
-        const bool useCoroutine = true;
-        const bool useCoroutineYieldNull = false;
-
-        if (useCoroutine)
+        if (m_applyForceContinuous.IsKeyDown)
         {
-
-            if (m_keyG.IsKeyDown || Button2.IsKeyDown)
-            {
-                Debug.Log("appling continuous forces (w/coroutine)...");
-                if (useCoroutineYieldNull)
-                {
-                    StartCoroutine(ApplyForcesOverAPeriodOfTimeCoroutineYieldNull());    
-                }
-                else
-                {
-                    StartCoroutine(ApplyForcesOverAPeriodOfTimeCoroutineAndWaitForFixedUpdate());    
-                }
-                
-            }            
-        }
-        else
-        {
-            if (m_keyG.IsKeyDown || Button2.IsKeyDown)
-            {
-                m_numberOfFixedUpdatesApplingForces = 100;
-            }
-            ApplyForcesOverAPeriodOfTime();
+            Debug.Log("appling continuous forces (w/coroutine)...");
+            StartCoroutine(ApplyForcesOverAPeriodOfTimeAndWaitForFixedUpdate());
         }
     }
 
-    IEnumerator ApplyForcesOverAPeriodOfTimeCoroutineYieldNull()
+    IEnumerator ApplyForcesOverAPeriodOfTimeAndWaitForFixedUpdate()
     {
-        // siccome le coroutine vengono aggiornate ad ogni update
-        // ho il dubbio che in questo caso non siano indicate (l'azione andrebbe fatta ad ogni FxiedUpdate)
-        // todo: fare una scena pesantissima, loggare gli update, i fixedupdate e una coroutine
-        Debug.Log("ApplyForcesOverAPeriodOfTimeCoroutineYieldNull started...");
-        for (int i = 0; i < 100; i++)
+        Debug.Log("ApplyForcesOverAPeriodOfTimeAndWaitForFixedUpdate started...");
+        for (var i = 0; i < 15; i++)
         {
-            Log("ApplyForcesOverAPeriodOfTimeCoroutineYieldNull step=" + i);
-            ApplyForcesOnce();
-            yield return null;
-        }
-        Debug.Log("ApplyForcesOverAPeriodOfTimeCoroutineYieldNull finished...");
-    }
-
-    IEnumerator ApplyForcesOverAPeriodOfTimeCoroutineAndWaitForFixedUpdate()
-    {
-        Debug.Log("ApplyForcesOverAPeriodOfTimeCoroutineAndWaitForFixedUpdate started...");
-        for (int i = 0; i < 100; i++)
-        {
-            Log("ApplyForcesOverAPeriodOfTimeCoroutineAndWaitForFixedUpdate step=" + i);
             ApplyForcesOnce();
             yield return new WaitForFixedUpdate();    
         }
-        Debug.Log("ApplyForcesOverAPeriodOfTimeCoroutineAndWaitForFixedUpdate finished...");
+        Debug.Log("ApplyForcesOverAPeriodOfTimeAndWaitForFixedUpdate finished...");
     }
+    
 
-    private int m_numberOfFixedUpdatesApplingForces;
     void ApplyForcesOverAPeriodOfTime()
     {
         if (m_numberOfFixedUpdatesApplingForces-- <=0)
             return;
-        Log("ApplyForcesOverAPeriodOfTime");
+
         ApplyForcesOverTime();
     }
 
     private void ApplyForcesOverTime()
     {
-        var force = new Vector3(0, 0, -10);
+        var force = new Vector3(0, 0.3f, 0);
 
         // Add a continuous acceleration to the rigidbody, ignoring its mass.
         // Apply the acceleration in each FixedUpdate over a duration of time. In contrast to ForceMode.Force, Acceleration will move every 
@@ -139,7 +132,7 @@ public class TestAddForceMode : MonoBehaviour
 
     private void ApplyForcesOnce()
     {        
-        var force = new Vector3(0, 0, -10);
+        var force = new Vector3(0, 5, 0);
 
         // Add an instant force impulse to the rigidbody, using its mass.
         // Apply the impulse force instantly with a single function call. This mode depends on the mass of rigidbody so more force must be applied 
@@ -154,8 +147,20 @@ public class TestAddForceMode : MonoBehaviour
         m_cube4.rigidbody.AddForce(force, ForceMode.VelocityChange);
     }
 
-    private void Log(string message)
+    static Vector3 CalculateForceWithForceMode(Rigidbody body, Vector3 force, ForceMode forceMode)
     {
-        //Console.WriteLine(message);
+        switch (forceMode)
+        {
+            case ForceMode.Force:
+                return force;
+            case ForceMode.Impulse:
+                return force / Time.fixedDeltaTime;
+            case ForceMode.Acceleration:
+                return force * body.mass;
+            case ForceMode.VelocityChange:
+                return force * body.mass / Time.fixedDeltaTime;
+        }
+
+        throw new InvalidOperationException("unsupported ForceMode");
     }
 }
