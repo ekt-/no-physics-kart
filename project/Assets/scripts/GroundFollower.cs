@@ -27,7 +27,7 @@ public class GroundFollower : MonoBehaviour
         var x = Input.GetAxis("Horizontal");
 	    var y = Input.GetAxis("Vertical");
 
-        this.rigidbody.velocity += y * transform.forward * forwardSpeed;
-        this.rigidbody.AddTorque(transform.up * x * steerAngle, ForceMode.Acceleration);
+        this.GetComponent<Rigidbody>().velocity += y * transform.forward * forwardSpeed;
+        this.GetComponent<Rigidbody>().AddTorque(transform.up * x * steerAngle, ForceMode.Acceleration);
     }
 }

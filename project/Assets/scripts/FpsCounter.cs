@@ -26,7 +26,7 @@ public class FpsCounter : MonoBehaviour
  
 			// Display it
 			FramesPerSec = Mathf.RoundToInt(frameCount / timeSpan);
-			gameObject.guiText.text = FramesPerSec.ToString() + " fps";
+			gameObject.GetComponent<GUIText>().text = FramesPerSec.ToString() + " fps";
 		}
 	}
 }

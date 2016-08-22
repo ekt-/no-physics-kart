@@ -38,15 +38,15 @@ public class KartPrefabController : MonoBehaviour
         var force = new Vector3(0, 0, 10);
         if (isAccelerating)
         {
-            rigidbody.AddRelativeForce(force, ForceMode.Acceleration);    
+            GetComponent<Rigidbody>().AddRelativeForce(force, ForceMode.Acceleration);    
         }
         else
         {
-            var brakeForce = rigidbody.velocity * -0.1f;
-            rigidbody.AddForce(brakeForce, ForceMode.Impulse);
+            var brakeForce = GetComponent<Rigidbody>().velocity * -0.1f;
+            GetComponent<Rigidbody>().AddForce(brakeForce, ForceMode.Impulse);
         }
 
-        var velocityMagnitude = rigidbody.velocity.magnitude;
+        var velocityMagnitude = GetComponent<Rigidbody>().velocity.magnitude;
         var turnVelocityThreshold = isAccelerating ? 0.5f : 10f;
         var canTurn = velocityMagnitude > turnVelocityThreshold;
 
@@ -56,12 +56,12 @@ public class KartPrefabController : MonoBehaviour
             if (m_inputLeft)
             {
                 var turnTorque = new Vector3(0, -turnSpeed, 0);
-                rigidbody.AddTorque(turnTorque);
+                GetComponent<Rigidbody>().AddTorque(turnTorque);
             }
             else if (m_inputRight)
             {
                 var turnTorque = new Vector3(0, turnSpeed, 0);
-                rigidbody.AddTorque(turnTorque);
+                GetComponent<Rigidbody>().AddTorque(turnTorque);
             }            
         }
 
@@ -76,9 +76,9 @@ public class KartPrefabController : MonoBehaviour
 
         // kill lateral force
         var rightNormal = transform.TransformDirection(new Vector3(1, 0, 0));
-        var lateralVelocity = Vector3.Dot(rightNormal, rigidbody.velocity)*rightNormal;
-        var impulse = - rigidbody.mass * lateralVelocity;
-        rigidbody.AddForce(impulse, ForceMode.Impulse);
+        var lateralVelocity = Vector3.Dot(rightNormal, GetComponent<Rigidbody>().velocity)*rightNormal;
+        var impulse = - GetComponent<Rigidbody>().mass * lateralVelocity;
+        GetComponent<Rigidbody>().AddForce(impulse, ForceMode.Impulse);
 
 
     }

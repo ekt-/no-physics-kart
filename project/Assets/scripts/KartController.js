@@ -15,8 +15,8 @@ function FixedUpdate ()
 	if (HitTestWithRoad()) 
 	{
 	}
-	this.rigidbody.velocity += y * transform.forward * forwardSpeed;		
-	this.rigidbody.AddTorque(transform.up * x * steerAngle, ForceMode.Acceleration);
+	this.GetComponent.<Rigidbody>().velocity += y * transform.forward * forwardSpeed;		
+	this.GetComponent.<Rigidbody>().AddTorque(transform.up * x * steerAngle, ForceMode.Acceleration);
 }
 
 function OnCollisionEnter(collision:Collision) {

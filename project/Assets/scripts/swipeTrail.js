@@ -23,10 +23,10 @@ function Update ()
 			hit.transform.gameObject.transform.localScale = new Vector3(0.5,0.5,0.5);
 			//create another sphere
 			var sphere : GameObject = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-			sphere.AddComponent("Rigidbody");
+			sphere.AddComponent.<Rigidbody>();
 			sphere.transform.position = hit.transform.gameObject.transform.position;
 			sphere.transform.localScale = new Vector3(0.5,0.5,0.5);
-			sphere.rigidbody.AddForce(this.transform.forward * 800);
+			sphere.GetComponent.<Rigidbody>().AddForce(this.transform.forward * 800);
 			sphere.gameObject.name = "ball";	
 		}
    	}

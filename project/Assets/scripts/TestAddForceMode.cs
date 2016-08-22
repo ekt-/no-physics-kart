@@ -120,14 +120,14 @@ public class TestAddForceMode : MonoBehaviour
         // Apply the acceleration in each FixedUpdate over a duration of time. In contrast to ForceMode.Force, Acceleration will move every 
         // rigidbody the same way regardless of differences in mass. This mode is useful if you just want to control the acceleration of 
         // an object directly. In this mode, the unit of the force parameter is applied to the rigidbody as distance/time^2.
-        m_cube1.rigidbody.AddForce(force, ForceMode.Acceleration);
+        m_cube1.GetComponent<Rigidbody>().AddForce(force, ForceMode.Acceleration);
 
         // Add a continuous force to the rigidbody, using its mass.
         // Apply the force in each FixedUpdate over a duration of time. This mode depends on the mass of rigidbody so more force must be 
         // applied to push or twist higher-mass objects the same amount as lower-mass objects. This mode is useful for setting up realistic 
         // physics where it takes more force to move heavier objects. In this mode, the unit of the force parameter is applied to the 
         // rigidbody as mass*distance/time^2.
-        m_cube2.rigidbody.AddForce(force, ForceMode.Force);
+        m_cube2.GetComponent<Rigidbody>().AddForce(force, ForceMode.Force);
     }
 
     private void ApplyForcesOnce()
@@ -138,13 +138,13 @@ public class TestAddForceMode : MonoBehaviour
         // Apply the impulse force instantly with a single function call. This mode depends on the mass of rigidbody so more force must be applied 
         // to push or twist higher-mass objects the same amount as lower-mass objects. This mode is useful for applying forces that happen instantly, 
         // such as forces from explosions or collisions. In this mode, the unit of the force parameter is applied to the rigidbody as mass*distance/time.
-        m_cube3.rigidbody.AddForce(force, ForceMode.Impulse);
+        m_cube3.GetComponent<Rigidbody>().AddForce(force, ForceMode.Impulse);
 
         // Add an instant velocity change to the rigidbody, ignoring its mass.
         // Apply the velocity change instantly with a single function call. In contrast to ForceMode.Impulse, VelocityChange will change the velocity 
         // of every rigidbody the same way regardless of differences in mass. This mode is useful for something like a fleet of differently-sized space ships 
         // that you want to control without accounting for differences in mass. In this mode, the unit of the force parameter is applied to the rigidbody as distance/time.
-        m_cube4.rigidbody.AddForce(force, ForceMode.VelocityChange);
+        m_cube4.GetComponent<Rigidbody>().AddForce(force, ForceMode.VelocityChange);
     }
 
     static Vector3 CalculateForceWithForceMode(Rigidbody body, Vector3 force, ForceMode forceMode)
